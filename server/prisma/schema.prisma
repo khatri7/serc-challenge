@@ -8,6 +8,23 @@ datasource db {
 }
 
 model Project {
-  id Int @id @default(autoincrement())
-  contract String
+  id               Int       @id @default(autoincrement())
+  contract         String
+  core             String
+  sponsor          String
+  thrust           String?
+  taskOrder        Int       @db.UnsignedSmallInt
+  rt               Int       @db.UnsignedSmallInt
+  kuali            Int       @db.UnsignedInt
+  title            String
+  pi               String
+  start            DateTime  @db.Date
+  end              DateTime  @db.Date
+  awardDate        DateTime? @db.Date
+  totalAwardAmount Decimal   @db.Decimal(12, 2)
+  increment        Int       @default(0) @db.UnsignedSmallInt
+  incrementAmount  Decimal   @db.Decimal(12, 2)
+  taskCorrelation  String?
+
+  @@unique([contract, rt, increment])
 }
