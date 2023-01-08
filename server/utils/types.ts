@@ -19,3 +19,10 @@ export interface Project {
 	incrementAmount: number | Decimal;
 	taskCorrelation?: string | null;
 }
+
+export interface Award {
+	awardDate: Date | null;
+	totalAwardAmount: number | Decimal;
+	increment: number;
+	incrementAmount: number | Decimal;
+}
