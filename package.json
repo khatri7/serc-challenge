@@ -21,5 +21,8 @@
 	"homepage": "https://github.com/khatri7/serc-challenge#readme",
 	"devDependencies": {
 		"concurrently": "^7.6.0"
+	},
+	"dependencies": {
+		"react-router-dom": "^6.6.1"
 	}
 }
