@@ -1,7 +1,8 @@
 import moment from "moment";
-import React, { Ref, useEffect, useRef } from "react";
-import { Table } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Stack, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import AddIncrementForm from "../../components/AddIncrementForm";
 import useQuery from "../../hooks/useQuery";
 const $ = require("jquery");
 $.DataTable = require("datatables.net-bs5");
@@ -24,9 +25,14 @@ function Project() {
 	const { data, loading, error } = useQuery<{
 		project: { [key: string]: any };
 	}>(`/projects/${contract}/${rt}`);
+	const [project, setProject] = useState(data?.project);
+	const [showIncrementForm, setShowIncrementForm] = useState<Boolean>(false);
+	useEffect(() => {
+		setProject(data?.project);
+	}, [data?.project]);
+
 	const renderProjectAwardData = () => {
-		if (!data?.project) return;
-		const { project } = data;
+		if (!project) return;
 		const awardData =
 			project.awards?.map(
 				(award: {
@@ -51,14 +57,21 @@ function Project() {
 			order: [[2, "asc"]],
 		});
 	};
+
+	useEffect(() => {
+		if (project?.awards && tableRef.current) renderProjectAwardData();
+	}, [project?.awards]);
+
 	useEffect(() => {
 		if (tableRef.current) {
 			renderProjectAwardData();
 		}
 	});
+
 	if (loading) return <p>Loading...</p>;
-	if (error || !data?.project) return <p>Error loading content</p>;
-	const { project } = data;
+
+	if (error || !project) return <p>Error loading content</p>;
+
 	return (
 		<div>
 			<h1>{project.title}</h1>
@@ -86,7 +99,38 @@ function Project() {
 				<dt className="col-sm-3">Task Correlation</dt>
 				<dd className="col-sm-9">{project.taskCorrelation}</dd>
 			</dl>
-			<h3>Awards</h3>
+			<Stack
+				direction="horizontal"
+				style={{
+					justifyContent: "space-between",
+				}}
+			>
+				<h3>Awards</h3>
+				{!showIncrementForm && (
+					<Button
+						onClick={() => {
+							setShowIncrementForm(true);
+						}}
+					>
+						Add Increment
+					</Button>
+				)}
+			</Stack>
+			<div>
+				{showIncrementForm && (
+					<AddIncrementForm
+						close={() => {
+							setShowIncrementForm(false);
+						}}
+						onSuccess={(project: { [key: string]: any }) => {
+							setProject(project);
+							setShowIncrementForm(false);
+						}}
+						contract={project.contract}
+						rt={project.rt}
+					/>
+				)}
+			</div>
 			<Table width="100%" ref={tableRef} id="project-awards-table"></Table>
 		</div>
 	);

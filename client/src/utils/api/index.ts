@@ -21,4 +21,33 @@ export const GET = async (endpoint: string, params = {}, headers = {}) => {
 	return data;
 };
 
+/**
+ *
+ * @param {string} endpoint to which the API request is to be made
+ * @param {object} body request body
+ * @param {object} params query parameters
+ * @returns
+ */
+export const POST = async (
+	endpoint: string,
+	body = {},
+	params = {},
+	headers = {}
+) => {
+	const { data } = await axios.post(endpoint, body, {
+		params,
+		headers,
+	});
+	return data;
+};
+
 export const getProjects = async () => GET("/projects");
+
+export const addIncrementRecord = async (
+	contract: string,
+	rt: number,
+	award = {}
+) => POST(`/projects/${contract}/${rt}`, award);
+
+export const createRecord = async (project: { [key: string]: any }) =>
+	POST("/projects", project);

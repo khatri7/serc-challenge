@@ -44,7 +44,7 @@ router
 				parseInt(rt, 10),
 				req.body
 			);
-			res.status(201).json(project);
+			res.status(201).json({ project });
 		} catch (e: { message: string } | any) {
 			console.error(e.message);
 			res.status(500).json({ message: e.message });

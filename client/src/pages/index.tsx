@@ -1,22 +1,24 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { getProjects } from "../utils/api";
 const $ = require("jquery");
 $.DataTable = require("datatables.net-bs5");
 
 const columns = [
-	{ title: "Contract", data: "contract" },
-	{ title: "Core", data: "core" },
-	{ title: "Sponsor", data: "sponsor" },
-	{ title: "Task Order", data: "taskOrder" },
-	{ title: "RT", data: "rt" },
-	{ title: "Kuali", data: "kuali" },
-	{ title: "Title", data: "title" },
-	{ title: "PI", data: "pi" },
-	{ title: "Start Date", data: "start" },
-	{ title: "End Date", data: "end" },
+	{ title: "Contract", data: "contract", width: 250 },
+	{ title: "Core", data: "core", width: 100 },
+	{ title: "Sponsor", data: "sponsor", width: 100 },
+	{ title: "Task Order", data: "taskOrder", width: 100 },
+	{ title: "RT", data: "rt", width: 100 },
+	{ title: "Kuali", data: "kuali", width: 100 },
+	{ title: "Title", data: "title", width: 200 },
+	{ title: "PI", data: "pi", width: 200 },
+	{ title: "Start Date", data: "start", width: 100 },
+	{ title: "End Date", data: "end", width: 100 },
+	{ title: "Calendar Year", data: "year", width: 100 },
+	{ title: "Quarter", data: "quarter", width: 100 },
 ];
 
 function Home() {
@@ -31,6 +33,8 @@ function Home() {
 					...project,
 					start: moment(project.start).format("MM/DD/YYYY"),
 					end: moment(project.end).format("MM/DD/YYYY"),
+					year: moment(project.start).format("YYYY"),
+					quarter: `Q${moment(project.start).quarter()}`,
 				})
 			) ?? [];
 		const table = $(`#projects-table`).DataTable({
@@ -52,13 +56,6 @@ function Home() {
 	return (
 		<div>
 			{loading && <p>Loading...</p>}
-			<div
-				style={{
-					textAlign: "right",
-				}}
-			>
-				<Button>Create Record</Button>
-			</div>
 			<Table width="100%" id="projects-table"></Table>
 		</div>
 	);

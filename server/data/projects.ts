@@ -47,14 +47,52 @@ export const getAllProjects = async (): Promise<
 };
 
 export const addNewRecord = async (project: Project): Promise<Project> => {
+	const {
+		contract,
+		core,
+		sponsor,
+		taskOrder,
+		rt,
+		kuali,
+		title,
+		pi,
+		start,
+		end,
+		totalAwardAmount,
+		incrementAmount,
+	} = project;
+	if (
+		!contract ||
+		!core ||
+		!sponsor ||
+		!taskOrder ||
+		!rt ||
+		!kuali ||
+		!title ||
+		!pi ||
+		!start ||
+		!end ||
+		!totalAwardAmount ||
+		!incrementAmount
+	)
+		throw new Error("Please provide all required fields");
 	const existingRecord = await doesRecordExist(project.contract, project.rt);
 	if (existingRecord)
 		throw new Error("Project with this Contract and RT combination exists");
 	const newRecord = await db.project.create({
 		data: {
-			...project,
-			start: new Date(project.start),
-			end: new Date(project.end),
+			contract,
+			core,
+			sponsor,
+			taskOrder,
+			rt,
+			kuali,
+			title,
+			pi,
+			totalAwardAmount,
+			incrementAmount,
+			start: new Date(start),
+			end: new Date(end),
 		},
 	});
 	return newRecord;
@@ -133,6 +171,10 @@ export const addIncrementRecord = async (
 			increment: "desc",
 		},
 	});
+	if (!award.totalAwardAmount)
+		throw new Error("Valid total award amount is required");
+	if (!award.incrementAmount)
+		throw new Error("Valid increment amount is required");
 	if (!award.awardDate) throw new Error("Valid award date is required");
 	if (existingRecords.length === 0)
 		throw new Error("No project found with given Contract and RT");
