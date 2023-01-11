@@ -22,6 +22,26 @@ const validationSchema = Yup.object().shape({
 	),
 });
 
+export const FormInput: React.FC<{
+	label: string;
+	handleChange: React.ChangeEventHandler;
+	name: string;
+	type: string;
+	err: string | undefined;
+}> = ({ label, handleChange, name, type, err }) => (
+	<Form.Group className="mb-3">
+		<Form.Label>{label}</Form.Label>
+		<Form.Control
+			name={name}
+			type={type}
+			onChange={handleChange}
+			className={err ? "is-invalid" : ""}
+			step="any"
+		/>
+		{err && <div className="invalid-feedback">{err}</div>}
+	</Form.Group>
+);
+
 const AddIncrementForm = ({
 	close,
 	onSuccess,
@@ -33,32 +53,6 @@ const AddIncrementForm = ({
 	contract: string;
 	rt: number;
 }) => {
-	const FormInput = ({
-		label,
-		handleChange,
-		name,
-		type,
-		err,
-	}: {
-		label: string;
-		handleChange: React.ChangeEventHandler;
-		name: string;
-		type: string;
-		err: string | undefined;
-	}) => (
-		<Form.Group className="mb-3">
-			<Form.Label>{label}</Form.Label>
-			<Form.Control
-				name={name}
-				type={type}
-				onChange={handleChange}
-				className={err ? "is-invalid" : ""}
-				step="any"
-			/>
-			{err && <div className="invalid-feedback">{err}</div>}
-		</Form.Group>
-	);
-
 	return (
 		<div
 			style={{

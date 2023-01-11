@@ -8,7 +8,12 @@ const $ = require("jquery");
 $.DataTable = require("datatables.net-bs5");
 
 const columns = [
-	{ title: "Award Date", data: "awardDate" },
+	{
+		title: "Award Date",
+		data: "awardDate",
+		type: "date",
+		dateFormat: "mm-dd-yyyy",
+	},
 	{ title: "Total Amount", data: "totalAwardAmount" },
 	{ title: "Increment", data: "increment" },
 	{ title: "Increment Amount", data: "incrementAmount" },
@@ -59,18 +64,12 @@ function Project() {
 	};
 
 	useEffect(() => {
-		if (project?.awards && tableRef.current) renderProjectAwardData();
-	}, [project?.awards]);
-
-	useEffect(() => {
-		if (tableRef.current) {
-			renderProjectAwardData();
-		}
-	});
+		if (tableRef.current) renderProjectAwardData();
+	}, [tableRef.current, project?.awards]);
 
 	if (loading) return <p>Loading...</p>;
 
-	if (error || !project) return <p>Error loading content</p>;
+	if (error || !project) return <p>Error loading content: {error}</p>;
 
 	return (
 		<div>
@@ -103,6 +102,7 @@ function Project() {
 				direction="horizontal"
 				style={{
 					justifyContent: "space-between",
+					marginBottom: "1rem",
 				}}
 			>
 				<h3>Awards</h3>

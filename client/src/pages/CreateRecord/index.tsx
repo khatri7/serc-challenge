@@ -2,6 +2,8 @@ import { Formik } from "formik";
 import React from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { FormInput } from "../../components/AddIncrementForm";
 import { createRecord, handleError } from "../../utils/api";
 
 interface FormValues {
@@ -18,6 +20,21 @@ interface FormValues {
 	totalAwardAmount: number | "";
 	incrementAmount: number | "";
 }
+
+const validationSchema = Yup.object().shape({
+	contract: Yup.string().required("Contract is required"),
+	core: Yup.string().required("Core is required"),
+	sponsor: Yup.string().required("Sponsor is required"),
+	taskOrder: Yup.number().required("Task Order is required"),
+	rt: Yup.number().required("RT is required"),
+	kuali: Yup.number().required("Kuali is required"),
+	title: Yup.string().required("Title is required"),
+	pi: Yup.string().required("PI is required"),
+	start: Yup.date().required("Start date is required"),
+	end: Yup.date().required("End date is required"),
+	totalAwardAmount: Yup.number().required("Total award amount is required"),
+	incrementAmount: Yup.number().required("Increment amount is required"),
+});
 
 function CreateRecord() {
 	const navigate = useNavigate();
@@ -39,6 +56,7 @@ function CreateRecord() {
 					totalAwardAmount: "",
 					incrementAmount: "",
 				}}
+				validationSchema={validationSchema}
 				onSubmit={async (values) => {
 					try {
 						const resp = await createRecord(values);
@@ -51,139 +69,125 @@ function CreateRecord() {
 					}
 				}}
 			>
-				{({ handleSubmit, handleChange }) => (
+				{({ handleSubmit, handleChange, errors }) => (
 					<Form onSubmit={handleSubmit}>
 						<Container>
 							<Row>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Contract</Form.Label>
-										<Form.Control
-											name="contract"
-											type="text"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Contract"
+										name="contract"
+										err={errors.contract}
+										handleChange={handleChange}
+										type="text"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Core</Form.Label>
-										<Form.Control
-											name="core"
-											type="text"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Core"
+										name="core"
+										err={errors.core}
+										handleChange={handleChange}
+										type="text"
+									/>
 								</Col>
 							</Row>
 							<Row>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Sponsor</Form.Label>
-										<Form.Control
-											name="sponsor"
-											type="text"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Sponsor"
+										name="sponsor"
+										err={errors.sponsor}
+										handleChange={handleChange}
+										type="text"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Title</Form.Label>
-										<Form.Control
-											name="title"
-											type="text"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Title"
+										name="title"
+										err={errors.title}
+										handleChange={handleChange}
+										type="text"
+									/>
 								</Col>
 							</Row>
 							<Row>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Task Order</Form.Label>
-										<Form.Control
-											name="taskOrder"
-											type="number"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Task Order"
+										name="taskOrder"
+										err={errors.taskOrder}
+										handleChange={handleChange}
+										type="number"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>RT</Form.Label>
-										<Form.Control
-											name="rt"
-											type="number"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="RT"
+										name="rt"
+										err={errors.rt}
+										handleChange={handleChange}
+										type="number"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Kuali</Form.Label>
-										<Form.Control
-											name="kuali"
-											type="number"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Kuali"
+										name="kuali"
+										err={errors.kuali}
+										handleChange={handleChange}
+										type="number"
+									/>
 								</Col>
 							</Row>
 							<Row>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>PI</Form.Label>
-										<Form.Control
-											name="pi"
-											type="text"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="PI"
+										name="pi"
+										err={errors.pi}
+										handleChange={handleChange}
+										type="text"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Start Date</Form.Label>
-										<Form.Control
-											name="start"
-											type="date"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Start Date"
+										name="start"
+										err={errors.start}
+										handleChange={handleChange}
+										type="date"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>End Date</Form.Label>
-										<Form.Control
-											name="end"
-											type="date"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="End Date"
+										name="end"
+										err={errors.end}
+										handleChange={handleChange}
+										type="date"
+									/>
 								</Col>
 							</Row>
 							<Row>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Total Award Amount</Form.Label>
-										<Form.Control
-											name="totalAwardAmount"
-											type="number"
-											step="any"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Total Award Amount"
+										name="totalAwardAmount"
+										err={errors.totalAwardAmount}
+										handleChange={handleChange}
+										type="number"
+									/>
 								</Col>
 								<Col>
-									<Form.Group className="mb-3">
-										<Form.Label>Increment Amount</Form.Label>
-										<Form.Control
-											name="incrementAmount"
-											type="number"
-											step="any"
-											onChange={handleChange}
-										/>
-									</Form.Group>
+									<FormInput
+										label="Increment Amount"
+										name="incrementAmount"
+										err={errors.incrementAmount}
+										handleChange={handleChange}
+										type="number"
+									/>
 								</Col>
 								<Col />
 							</Row>
